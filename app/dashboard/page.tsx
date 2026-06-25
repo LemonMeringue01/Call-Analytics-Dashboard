@@ -19,22 +19,32 @@ import {
 import { useEffect, useState } from "react"
 
 
-
+interface CallRecord {
+  callerName: string;
+  callerNumber: string;
+  receiverNumber: string;
+  city: string;
+  callDirection: string;
+  callStatus: string;
+  callDuration: number;
+  callCost: number;
+  callStartTime: string;
+  callEndTime: string;
+}
 
 
 export default function Page() {
-    const [data, setData] = useState([]);
-    const [numCalls, setNumCalls] = useState(null);
-    const [longCall, setLongCall] = useState(null);
+    const [data, setData] = useState<CallRecord[]>([]);
+    const [numCalls, setNumCalls] = useState(0);
+    const [longCall, setLongCall] = useState(0);
 
 
     useEffect(() => {
       async function fetchData() {
         const response = await fetch("https://69b30b45e224ec066bdb55a0.mockapi.io/api/v1/cdr");
-        const result = await response.json();
+        const result: CallRecord[] = await response.json();
         setData(result);
-        console.log("Hello World.");
-      
+        
         setNumCalls(result.length);
    
 
