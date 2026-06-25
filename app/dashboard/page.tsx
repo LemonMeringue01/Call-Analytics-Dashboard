@@ -85,7 +85,7 @@ export default function Page() {
 
                     <TableBody>
                       {data.map((row) => (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.callerName}>
                           <TableCell>{row.callerName}</TableCell>
                           <TableCell>{row.callerNumber}</TableCell>
                           <TableCell>{row.receiverNumber}</TableCell>
