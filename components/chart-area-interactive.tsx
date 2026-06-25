@@ -32,25 +32,36 @@ import {
 
 export const description = "An interactive area chart"
 
+
+type CallRecord = {
+  callStartTime: string
+  callDirection: boolean
+}
+
+type CallsByDay = {
+  date: string
+  inbound: number
+  outbound: number
+}
+
 const chartConfig = {
-  visitors: { label: "Calls" },
-  Inbound: { label: "Inbound", color: "var(--primary)" },
-  Outbound: { label: "Outbound", color: "var(--primary)" },
+  inbound: { label: "Inbound", color: "var(--primary)" },
+  outbound: { label: "Outbound", color: "var(--primary)" },
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
-  const [callsDay, setCallsDay] = React.useState([])
-
+  const [callsDay, setCallsDay] = React.useState<CallsByDay[]>([])
   React.useEffect(() => {
     if (isMobile) setTimeRange("7d")
 
     async function fetchData() {
       const response = await fetch("https://69b30b45e224ec066bdb55a0.mockapi.io/api/v1/cdr")
       const result = await response.json()
+      
 
-      const grouped = result.reduce((acc, res) => {
+      const grouped = result.reduce<Record<string, CallsByDay>>((acc, res) => {
         const date = res.callStartTime.slice(0, 10)
 
         if (!acc[date]) {
